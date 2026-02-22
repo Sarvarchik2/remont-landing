@@ -1,0 +1,23 @@
+{
+  "name": "corporate-nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@nuxtjs/tailwindcss": "^6.11.4",
+    "nuxt": "^3.11.1",
+    "vue": "latest"
+  },
+  "dependencies": {
+    "@vueuse/core": "^14.2.1",
+    "clsx": "^2.1.0",
+    "lucide-vue-next": "^0.447.0",
+    "tailwind-merge": "^2.2.2"
+  }
+}
