@@ -159,6 +159,10 @@ export interface Translations {
     house: string;
     office: string;
     enterArea: string;
+    economy: string;
+    standard: string;
+    premium: string;
+    renovationType: string;
   };
   // Login Page
   loginPage: {
@@ -404,6 +408,10 @@ export const translations: Record<Language, Translations> = {
       house: 'Дом',
       office: 'Офис',
       enterArea: 'Введите площадь в м²',
+      economy: 'Эконом',
+      standard: 'Стандарт',
+      premium: 'Премиум',
+      renovationType: 'Тип ремонта',
     },
     loginPage: {
       title: 'Личный кабинет',
@@ -643,6 +651,10 @@ export const translations: Record<Language, Translations> = {
       house: 'Uy',
       office: 'Ofis',
       enterArea: 'Maydonni m²da kiriting',
+      economy: 'Ekonom',
+      standard: 'Standart',
+      premium: 'Premium',
+      renovationType: 'Ta\'mirlash turi',
     },
     loginPage: {
       title: 'Shaxsiy kabinet',

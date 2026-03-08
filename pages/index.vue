@@ -81,15 +81,14 @@
              {{ t.services.allServices }} <ArrowRight />
           </NuxtLink>
         </div>
-
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
            <div class="bg-zinc-900 p-10 rounded-[40px] hover:shadow-xl transition-shadow group">
               <div class="w-16 h-16 bg-zinc-800 rounded-full flex items-center justify-center mb-8 group-hover:bg-[#FFB800]/10 transition-colors">
                 <Paintbrush :size="28" class="text-[#FFB800]" />
               </div>
-              <h3 class="text-2xl font-bold mb-4 text-white">{{ t.services.cosmetic }}</h3>
-              <p class="text-zinc-400 mb-8">{{ t.services.cosmeticDesc }}</p>
-              <div class="text-3xl font-extrabold mb-8 text-white">180 <span class="text-lg text-zinc-500 font-medium">$/м²</span></div>
+              <h3 class="text-2xl font-bold mb-4 text-white">{{ packages[0]?.title }}</h3>
+              <p class="text-zinc-400 mb-8">{{ packages[0]?.desc }}</p>
+              <div class="text-3xl font-extrabold mb-8 text-white">{{ packages[0]?.price }} <span class="text-lg text-zinc-500 font-medium">$/м²</span></div>
               <NuxtLink to="/services"><Button variant="outline" class="w-full text-white border-zinc-700 hover:border-[#FFB800] hover:text-[#FFB800]">{{ t.services.details }}</Button></NuxtLink>
            </div>
            
@@ -98,9 +97,9 @@
               <div class="w-16 h-16 bg-zinc-100 rounded-full flex items-center justify-center mb-8">
                 <Hammer :size="28" class="text-[#FFB800]" />
               </div>
-              <h3 class="text-2xl font-bold mb-4 text-black">{{ t.services.capital }}</h3>
-              <p class="text-zinc-500 mb-8">{{ t.services.capitalDesc }}</p>
-              <div class="text-3xl font-extrabold mb-8 text-black">250 <span class="text-lg text-zinc-400 font-medium">$/м²</span></div>
+              <h3 class="text-2xl font-bold mb-4 text-black">{{ packages[1]?.title }}</h3>
+              <p class="text-zinc-500 mb-8">{{ packages[1]?.desc }}</p>
+              <div class="text-3xl font-extrabold mb-8 text-black">{{ packages[1]?.price }} <span class="text-lg text-zinc-400 font-medium">$/м²</span></div>
               <NuxtLink to="/services"><Button variant="white" class="w-full bg-[#FFB800] text-black border-none hover:bg-[#e0a200]">{{ t.services.details }}</Button></NuxtLink>
            </div>
 
@@ -108,9 +107,9 @@
               <div class="w-16 h-16 bg-zinc-800 rounded-full flex items-center justify-center mb-8 group-hover:bg-[#FFB800]/10 transition-colors">
                 <Layers :size="28" class="text-[#FFB800]" />
               </div>
-              <h3 class="text-2xl font-bold mb-4 text-white">{{ t.services.designer }}</h3>
-              <p class="text-zinc-400 mb-8">{{ t.services.designerDesc }}</p>
-              <div class="text-3xl font-extrabold mb-8 text-white">350+ <span class="text-lg text-zinc-500 font-medium">$/м²</span></div>
+              <h3 class="text-2xl font-bold mb-4 text-white">{{ packages[2]?.title }}</h3>
+              <p class="text-zinc-400 mb-8">{{ packages[2]?.desc }}</p>
+              <div class="text-3xl font-extrabold mb-8 text-white">{{ packages[2]?.price }} <span class="text-lg text-zinc-500 font-medium">$/м²</span></div>
               <NuxtLink to="/services"><Button variant="outline" class="w-full text-white border-zinc-700 hover:border-[#FFB800] hover:text-[#FFB800]">{{ t.services.details }}</Button></NuxtLink>
            </div>
         </div>
@@ -200,10 +199,56 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { Star, Shield, ArrowRight, Paintbrush, Hammer, Layers, Instagram } from 'lucide-vue-next'
 
-const { t } = useLanguage()
+const { t, language } = useLanguage()
+const { fetchServices } = useApi()
+
+const apiPackages = ref<any[]>([])
+
+onMounted(async () => {
+  try {
+    const data = await fetchServices()
+    if (Array.isArray(data) && data.length > 0) {
+      apiPackages.value = data
+    }
+  } catch (e) {
+    console.error('Failed to fetch services for home:', e)
+  }
+})
+
+const packages = computed(() => {
+  const lang = language.value
+  const fallbacks = [
+    { title: t.value.services.cosmetic, price: "180", desc: t.value.services.cosmeticDesc },
+    { title: t.value.services.capital, price: "250", desc: t.value.services.capitalDesc },
+    { title: t.value.services.designer, price: "350+", desc: t.value.services.designerDesc },
+  ]
+
+  let result = fallbacks
+  const servicesList = apiPackages.value?.[0]?.services || apiPackages.value
+  if (servicesList && servicesList.length > 0) {
+    const getLocalized = (field: any, fallback: string = '') => {
+      if (!field) return fallback
+      if (typeof field === 'object') return field[lang] || field.ru || field.uz || fallback
+      return field
+    }
+
+    result = servicesList.slice(0, 3).map((pkg: any, index: number) => ({
+      title: getLocalized(pkg.title) || getLocalized(pkg.name) || pkg[`name_${lang}`] || fallbacks[index].title,
+      price: pkg.price != null ? String(pkg.price) : fallbacks[index].price,
+      desc: getLocalized(pkg.description) || getLocalized(pkg.desc) || pkg[`description_${lang}`] || fallbacks[index].desc,
+    }))
+  }
+
+  // Ensure there are always exactly 3 items to avoid indexing errors in the template
+  while (result.length < 3) {
+    result.push(fallbacks[result.length])
+  }
+
+  return result
+})
 
 const processItems = computed(() => [
   { step: "01", title: t.value.process.step1Title, desc: t.value.process.step1Desc },

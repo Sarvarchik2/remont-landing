@@ -23,19 +23,39 @@
           <!-- Type Toggle -->
           <div>
             <label class="text-xl font-bold block mb-6">{{ t.calculatorPage.roomType }}</label>
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <button
-                v-for="typeId in ['new', 'secondary']"
-                :key="typeId"
-                @click="formData.type = typeId"
+                v-for="p in prices"
+                :key="p.id"
+                @click="formData.type = p.id"
                 :class="cn(
-                  'py-6 rounded-[24px] font-bold text-lg transition-all',
-                  formData.type === typeId 
+                  'py-4 px-6 rounded-[24px] font-bold text-lg transition-all text-center',
+                  formData.type === p.id 
                     ? 'bg-[#FFB800] text-black shadow-lg' 
                     : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'
                 )"
               >
-                {{ typeId === 'new' ? t.calculatorPage.apartment : t.calculatorPage.house }}
+                {{ p.label }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Quality Tier -->
+          <div>
+            <label class="text-xl font-bold block mb-6">{{ t.calculatorPage.renovationType }}</label>
+            <div class="grid grid-cols-3 gap-4">
+              <button
+                v-for="tier in ['economy', 'standard', 'premium']"
+                :key="tier"
+                @click="formData.tier = tier"
+                :class="cn(
+                  'py-4 rounded-[20px] font-bold text-sm md:text-base transition-all',
+                  formData.tier === tier 
+                    ? 'bg-white text-black shadow-lg' 
+                    : 'bg-zinc-800 text-zinc-500 hover:bg-zinc-700'
+                )"
+              >
+                {{ (t.calculatorPage as any)[tier] }}
               </button>
             </div>
           </div>
@@ -57,8 +77,8 @@
             </button>
           </div>
 
-          <Button @click="calculate" variant="primary" class="w-full h-16 text-lg">
-            {{ t.calculatorPage.calculate }}
+          <Button @click="calculate" variant="primary" class="w-full h-16 text-lg" :disabled="loading">
+            {{ loading ? 'Загрузка цен...' : t.calculatorPage.calculate }}
           </Button>
         </div>
 
@@ -86,20 +106,57 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { Check } from 'lucide-vue-next'
+import { cn } from '~/utils/cn'
 
-const { t } = useLanguage()
+const { t, language } = useLanguage()
+const { fetchSettings } = useApi()
 
 const step = ref(1)
-const formData = ref({ area: 60, type: 'new', design: true })
+const loading = ref(true)
+const prices = ref<any[]>([])
+const formData = ref({ area: 60, type: 'new', tier: 'standard', design: true })
 const result = ref<number | null>(null)
 
 const calculate = () => {
   step.value = 2
   setTimeout(() => {
-    result.value = formData.value.area * (formData.value.type === 'new' ? 2500000 : 3200000)
+    const selectedType = prices.value.find(p => p.id === formData.value.type)
+    const basePrice = selectedType ? selectedType[formData.value.tier] : 1800000
+    
+    let total = formData.value.area * basePrice
+    if (formData.value.design) {
+      total += formData.value.area * 150000 // Add 150k per m2 for design
+    }
+    
+    result.value = total
     step.value = 3
-  }, 1500)
+  }, 1000)
 }
+
+onMounted(async () => {
+  try {
+    const data: any = await fetchSettings()
+    const lang = language.value
+    
+    if (Array.isArray(data) && data.length > 0 && data[0].prices) {
+      prices.value = data[0].prices.map((p: any) => ({
+        ...p,
+        label: p[`label_${lang}`] || p.label
+      }))
+    } else {
+      // Fallback
+      prices.value = [
+        { id: 'new', label: t.value.calculatorPage.apartment, economy: 1200000, standard: 1800000, premium: 3500000 },
+        { id: 'secondary', label: t.value.calculatorPage.apartment, economy: 1500000, standard: 2200000, premium: 4000000 },
+        { id: 'house', label: t.value.calculatorPage.house, economy: 2000000, standard: 3000000, premium: 5000000 }
+      ]
+    }
+  } catch (e) {
+    console.error('Failed to fetch prices:', e)
+  } finally {
+    loading.value = false
+  }
+})
 </script>

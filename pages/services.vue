@@ -8,14 +8,14 @@
         <ServicePackage 
           v-for="(pkg, i) in packages"
           :key="i"
-          :index="i"
+          :index="Number(i)"
           :title="pkg.title"
           :price="pkg.price"
           :unit="pkg.unit"
           :description="pkg.desc"
           :features="pkg.features"
           :image="pkg.image"
-          :isReversed="i % 2 !== 0"
+          :isReversed="Number(i) % 2 !== 0"
           :isDark="pkg.isBlack"
           @select="() => {}"
         />
@@ -76,47 +76,116 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { Layout, Layers, Zap, Droplets } from 'lucide-vue-next'
 
-const { t } = useLanguage()
+const { t, language } = useLanguage()
+const { fetchServices, fetchCatalog, baseURL } = useApi()
 
-const packages = computed(() => [
-  {
-    title: t.value.services.cosmetic,
-    price: "180",
-    unit: t.value.servicesPage.perSquareMeter,
-    desc: t.value.services.cosmeticDesc,
-    features: t.value.servicesPage.features.cosmetic,
-    isBlack: false,
-    image: "https://images.unsplash.com/photo-1759722668087-efcc63c91ed2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxicmlnaHQlMjBtb2Rlcm4lMjBhcGFydG1lbnQlMjBsaXZpbmclMjByb29tJTIwaW50ZXJpb3IlMjBkZXNpZ258ZW58MXx8fHwxNzcxMDU5MDUwfDA&ixlib=rb-4.1.0&q=80&w=1080"
-  },
-  {
-    title: t.value.services.capital,
-    price: "250",
-    unit: t.value.servicesPage.perSquareMeter,
-    desc: t.value.services.capitalDesc,
-    features: t.value.servicesPage.features.capital,
-    isBlack: true,
-    image: "https://images.unsplash.com/photo-1758448018619-4cbe2250b9ad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBtb2Rlcm4lMjBiYXRocm9vbSUyMHJlbm92YXRpb24lMjBpbnRlcmlvcnxlbnwxfHx8fDE3NzEwNTkwNTB8MA&ixlib=rb-4.1.0&q=80&w=1080"
-  },
-  {
-    title: t.value.services.designer,
-    price: "350+",
-    unit: t.value.servicesPage.perSquareMeter,
-    desc: t.value.services.designerDesc,
-    features: t.value.servicesPage.features.designer,
-    isBlack: false,
-    image: "https://images.unsplash.com/photo-1760611655987-d348d6d28174?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBwZW50aG91c2UlMjBpbnRlcmlvciUyMGRlc2lnbiUyMGRhcmslMjBtb29keSUyMGVsZWdhbnR8ZW58MXx8fHwxNzcxMDU5MDUwfDA&ixlib=rb-4.1.0&q=80&w=1080"
+const loading = ref(true)
+const apiPackages = ref<any[]>([])
+const apiIndividualWorks = ref<any[]>([])
+
+onMounted(async () => {
+  try {
+    const [servicesData, catalogData] = await Promise.all([
+      fetchServices(),
+      fetchCatalog()
+    ])
+    
+    if (Array.isArray(servicesData) && servicesData.length > 0) {
+      apiPackages.value = servicesData
+    }
+    
+    if (Array.isArray(catalogData) && catalogData.length > 0) {
+      apiIndividualWorks.value = catalogData
+    }
+  } catch (e) {
+    console.error('Failed to fetch services:', e)
+  } finally {
+    loading.value = false
   }
-])
+})
 
-const individualWorks = computed(() => [
-  { cat: t.value.servicesPage.demolition, items: t.value.servicesPage.works.demolition },
-  { cat: t.value.servicesPage.electrical, items: t.value.servicesPage.works.electrical },
-  { cat: t.value.servicesPage.finishing, items: t.value.servicesPage.works.finishing },
-  { cat: t.value.servicesPage.tiles, items: t.value.servicesPage.works.tiles },
-])
+const packages = computed(() => {
+  const lang = language.value
+  const servicesList = apiPackages.value?.[0]?.services || apiPackages.value
+  if (servicesList && servicesList.length > 0) {
+    return servicesList.map((pkg: any) => {
+      const getLocalized = (field: any, fallback: string = '') => {
+        if (!field) return fallback
+        if (typeof field === 'object') return field[lang] || field.ru || field.uz || fallback
+        return field
+      }
+      
+      return {
+        title: getLocalized(pkg.title) || getLocalized(pkg.name) || pkg[`name_${lang}`] || 'Услуга',
+        price: pkg.price != null ? String(pkg.price) : 'По запросу',
+        unit: pkg.unit || t.value.servicesPage.perSquareMeter,
+        desc: getLocalized(pkg.description) || getLocalized(pkg.desc) || pkg[`description_${lang}`] || '',
+        features: Array.isArray(pkg.features) ? pkg.features : (pkg.features ? pkg.features.split('\n') : []),
+        isBlack: pkg.is_dark || pkg.isBlack,
+        image: pkg.image || "https://images.unsplash.com/photo-1759722668087-efcc63c91ed2?auto=format&fit=crop&q=80&w=1080"
+      }
+    })
+  }
+
+  return [
+    {
+      title: t.value.services.cosmetic,
+      price: "180",
+      unit: t.value.servicesPage.perSquareMeter,
+      desc: t.value.services.cosmeticDesc,
+      features: t.value.servicesPage.features.cosmetic,
+      isBlack: false,
+      image: "https://images.unsplash.com/photo-1759722668087-efcc63c91ed2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxicmlnaHQlMjBtb2Rlcm4lMjBhcGFydG1lbnQlMjBsaXZpbmclMjByb29tJTIwaW50ZXJpb3IlMjBkZXNpZ258ZW58MXx8fHwxNzcxMDU5MDUwfDA&ixlib=rb-4.1.0&q=80&w=1080"
+    },
+    {
+      title: t.value.services.capital,
+      price: "250",
+      unit: t.value.servicesPage.perSquareMeter,
+      desc: t.value.services.capitalDesc,
+      features: t.value.servicesPage.features.capital,
+      isBlack: true,
+      image: "https://images.unsplash.com/photo-1758448018619-4cbe2250b9ad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBtb2Rlcm4lMjBiYXRocm9vbSUyMHJlbm92YXRpb24lMjBpbnRlcmlvcnxlbnwxfHx8fDE3NzEwNTkwNTB8MA&ixlib=rb-4.1.0&q=80&w=1080"
+    },
+    {
+      title: t.value.services.designer,
+      price: "350+",
+      unit: t.value.servicesPage.perSquareMeter,
+      desc: t.value.services.designerDesc,
+      features: t.value.servicesPage.features.designer,
+      isBlack: false,
+      image: "https://images.unsplash.com/photo-1760611655987-d348d6d28174?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBwZW50aG91c2UlMjBpbnRlcmlvciUyMGRlc2lnbiUyMGRhcmslMjBtb29keSUyMGVsZWdhbnR8ZW58MXx8fHwxNzcxMDU5MDUwfDA&ixlib=rb-4.1.0&q=80&w=1080"
+    }
+  ]
+})
+
+const individualWorks = computed(() => {
+  const lang = language.value
+  
+  const getLocalized = (field: any, fallback: string = '') => {
+    if (!field) return fallback
+    if (typeof field === 'object') return field[lang] || field.ru || field.uz || fallback
+    return field
+  }
+
+  if (apiIndividualWorks.value.length > 0) {
+    return apiIndividualWorks.value.map(cat => ({
+      cat: cat[`name_${lang}`] || getLocalized(cat.name) || cat.cat || 'Категория',
+      items: Array.isArray(cat.items) ? cat.items.map((item: any) => ({
+        name: item[`name_${lang}`] || getLocalized(item.name) || 'Услуга',
+        price: item.price != null ? String(item.price) : ''
+      })) : []
+    }))
+  }
+
+  return [
+    { cat: t.value.servicesPage.demolition, items: t.value.servicesPage.works.demolition },
+    { cat: t.value.servicesPage.electrical, items: t.value.servicesPage.works.electrical },
+    { cat: t.value.servicesPage.finishing, items: t.value.servicesPage.works.finishing },
+    { cat: t.value.servicesPage.tiles, items: t.value.servicesPage.works.tiles },
+  ]
+})
 
 const processItems = [
   { icon: Layout, label: 'Планировка' },
