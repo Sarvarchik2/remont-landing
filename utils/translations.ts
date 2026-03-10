@@ -163,7 +163,12 @@ export interface Translations {
     standard: string;
     premium: string;
     renovationType: string;
+    name: string;
+    phone: string;
+    successTitle: string;
+    successDesc: string;
   };
+
   // Login Page
   loginPage: {
     title: string;
@@ -412,7 +417,12 @@ export const translations: Record<Language, Translations> = {
       standard: 'Стандарт',
       premium: 'Премиум',
       renovationType: 'Тип ремонта',
+      name: 'Ваше имя',
+      phone: 'Номер телефона',
+      successTitle: 'Заявка отправлена!',
+      successDesc: 'Мы свяжемся с вами в течение 15 минут для уточнения деталей.',
     },
+
     loginPage: {
       title: 'Личный кабинет',
       description: 'Войдите чтобы отслеживать проект',
@@ -655,7 +665,12 @@ export const translations: Record<Language, Translations> = {
       standard: 'Standart',
       premium: 'Premium',
       renovationType: 'Ta\'mirlash turi',
+      name: 'Ismingiz',
+      phone: 'Telefon raqamingiz',
+      successTitle: 'Sorovingiz yuborildi!',
+      successDesc: 'Biz siz bilan 15 daqiqa ichida bog\'lanamiz.',
     },
+
     loginPage: {
       title: 'Shaxsiy kabinet',
       description: 'Loyihani kuzatish uchun kiring',

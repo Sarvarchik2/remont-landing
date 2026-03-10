@@ -71,30 +71,29 @@
         </div>
       </div>
     </section>
-
     <!-- Services Preview -->
-    <section class="py-32 bg-black rounded-[40px] mx-4">
+    <section class="py-32 bg-zinc-50 rounded-[40px] mx-4">
       <div class="container mx-auto px-6">
         <div class="flex justify-between items-end mb-16">
-          <SectionHeading :title="t.services.title" :subtitle="t.services.subtitle" dark />
-          <NuxtLink to="/services" class="hidden md:flex items-center gap-2 font-bold mb-16 text-white hover:text-[#FFB800] hover:gap-4 transition-all">
+          <SectionHeading :title="t.services.title" :subtitle="t.services.subtitle" />
+          <NuxtLink to="/services" class="hidden md:flex items-center gap-2 font-bold mb-16 text-black hover:text-[#FFB800] hover:gap-4 transition-all">
              {{ t.services.allServices }} <ArrowRight />
           </NuxtLink>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-           <div class="bg-zinc-900 p-10 rounded-[40px] hover:shadow-xl transition-shadow group">
-              <div class="w-16 h-16 bg-zinc-800 rounded-full flex items-center justify-center mb-8 group-hover:bg-[#FFB800]/10 transition-colors">
+           <div class="bg-white p-10 rounded-[40px] hover:shadow-xl transition-shadow group border border-zinc-100">
+              <div class="w-16 h-16 bg-zinc-50 rounded-full flex items-center justify-center mb-8 group-hover:bg-[#FFB800]/10 transition-colors">
                 <Paintbrush :size="28" class="text-[#FFB800]" />
               </div>
-              <h3 class="text-2xl font-bold mb-4 text-white">{{ packages[0]?.title }}</h3>
-              <p class="text-zinc-400 mb-8">{{ packages[0]?.desc }}</p>
-              <div class="text-3xl font-extrabold mb-8 text-white">{{ packages[0]?.price }} <span class="text-lg text-zinc-500 font-medium">$/м²</span></div>
-              <NuxtLink to="/services"><Button variant="outline" class="w-full text-white border-zinc-700 hover:border-[#FFB800] hover:text-[#FFB800]">{{ t.services.details }}</Button></NuxtLink>
+              <h3 class="text-2xl font-bold mb-4 text-black">{{ packages[0]?.title }}</h3>
+              <p class="text-zinc-500 mb-8">{{ packages[0]?.desc }}</p>
+              <div class="text-3xl font-extrabold mb-8 text-black">{{ packages[0]?.price }} <span class="text-lg text-zinc-400 font-medium">$/м²</span></div>
+              <NuxtLink to="/services"><Button variant="outline" class="w-full text-black border-zinc-200 hover:border-[#FFB800] hover:text-[#FFB800]">{{ t.services.details }}</Button></NuxtLink>
            </div>
            
            <div class="bg-white p-10 rounded-[40px] shadow-2xl scale-105 z-10 relative overflow-hidden border-2 border-[#FFB800]">
               <div class="absolute top-0 right-0 w-32 h-32 bg-[#FFB800] opacity-10 blur-[80px] rounded-full"></div>
-              <div class="w-16 h-16 bg-zinc-100 rounded-full flex items-center justify-center mb-8">
+              <div class="w-16 h-16 bg-zinc-50 rounded-full flex items-center justify-center mb-8">
                 <Hammer :size="28" class="text-[#FFB800]" />
               </div>
               <h3 class="text-2xl font-bold mb-4 text-black">{{ packages[1]?.title }}</h3>
@@ -102,15 +101,15 @@
               <div class="text-3xl font-extrabold mb-8 text-black">{{ packages[1]?.price }} <span class="text-lg text-zinc-400 font-medium">$/м²</span></div>
               <NuxtLink to="/services"><Button variant="white" class="w-full bg-[#FFB800] text-black border-none hover:bg-[#e0a200]">{{ t.services.details }}</Button></NuxtLink>
            </div>
-
-           <div class="bg-zinc-900 p-10 rounded-[40px] hover:shadow-xl transition-shadow group">
-              <div class="w-16 h-16 bg-zinc-800 rounded-full flex items-center justify-center mb-8 group-hover:bg-[#FFB800]/10 transition-colors">
+ 
+           <div class="bg-white p-10 rounded-[40px] hover:shadow-xl transition-shadow group border border-zinc-100">
+              <div class="w-16 h-16 bg-zinc-50 rounded-full flex items-center justify-center mb-8 group-hover:bg-[#FFB800]/10 transition-colors">
                 <Layers :size="28" class="text-[#FFB800]" />
               </div>
-              <h3 class="text-2xl font-bold mb-4 text-white">{{ packages[2]?.title }}</h3>
-              <p class="text-zinc-400 mb-8">{{ packages[2]?.desc }}</p>
-              <div class="text-3xl font-extrabold mb-8 text-white">{{ packages[2]?.price }} <span class="text-lg text-zinc-500 font-medium">$/м²</span></div>
-              <NuxtLink to="/services"><Button variant="outline" class="w-full text-white border-zinc-700 hover:border-[#FFB800] hover:text-[#FFB800]">{{ t.services.details }}</Button></NuxtLink>
+              <h3 class="text-2xl font-bold mb-4 text-black">{{ packages[2]?.title }}</h3>
+              <p class="text-zinc-500 mb-8">{{ packages[2]?.desc }}</p>
+              <div class="text-3xl font-extrabold mb-8 text-black">{{ packages[2]?.price }} <span class="text-lg text-zinc-400 font-medium">$/м²</span></div>
+              <NuxtLink to="/services"><Button variant="outline" class="w-full text-black border-zinc-200 hover:border-[#FFB800] hover:text-[#FFB800]">{{ t.services.details }}</Button></NuxtLink>
            </div>
         </div>
       </div>
@@ -141,21 +140,21 @@
     </section>
 
     <!-- Instagram & Social Proof -->
-    <section class="py-24 bg-black text-white rounded-[40px] mx-4 overflow-hidden">
+    <section class="py-24 bg-zinc-50 rounded-[40px] mx-4 overflow-hidden">
       <div class="container mx-auto px-6">
          <div class="flex flex-col md:flex-row justify-between items-center mb-16 gap-8">
            <div>
-             <h2 class="text-4xl font-extrabold mb-4">{{ t.social.title }}</h2>
-             <p class="text-zinc-400">{{ t.social.description }}</p>
+             <h2 class="text-4xl font-extrabold mb-4 text-black">{{ t.social.title }}</h2>
+             <p class="text-zinc-500">{{ t.social.description }}</p>
            </div>
-           <a href="#" class="bg-white text-black px-8 py-4 rounded-full font-bold flex items-center gap-2 hover:bg-zinc-200 transition-colors shadow-lg">
+           <a href="#" class="bg-black text-white px-8 py-4 rounded-full font-bold flex items-center gap-2 hover:bg-zinc-800 transition-colors shadow-lg">
              <Instagram :size="20" /> @remontuz
            </a>
          </div>
-
+ 
          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div v-for="(img, i) in instaImages" :key="i" class="aspect-square rounded-[24px] overflow-hidden group relative">
-               <img :src="img" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100" />
+            <div v-for="(img, i) in instaImages" :key="i" class="aspect-square rounded-[24px] overflow-hidden group relative border border-zinc-200">
+               <img :src="img" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
                  <Instagram class="text-white drop-shadow-lg" :size="32" />
                </div>
@@ -163,6 +162,7 @@
          </div>
       </div>
     </section>
+ection>
 
     <!-- FAQ -->
     <section class="py-32">
@@ -185,16 +185,43 @@
         <p class="text-xl text-zinc-500 mb-12 max-w-xl mx-auto">
           {{ t.cta.description }}
         </p>
-        <div class="flex flex-col sm:flex-row justify-center gap-4">
-           <NuxtLink to="/calculator">
-             <Button class="h-16 px-10 text-lg shadow-xl shadow-black/20">{{ t.cta.schedule }}</Button>
-           </NuxtLink>
-           <a href="tel:+998901234567">
-             <Button variant="white" class="h-16 px-10 text-lg border border-zinc-200">{{ t.cta.call }}</Button>
-           </a>
+        
+        <div v-if="!submitted" class="max-w-md mx-auto">
+          <div class="flex flex-col gap-4 mb-8">
+            <input 
+              v-model="leadForm.name"
+              type="text" 
+              class="w-full h-16 bg-white border border-zinc-200 rounded-[20px] px-6 focus:border-[#FFB800] outline-none transition-colors"
+              placeholder="Ваше имя"
+            />
+            <input 
+              v-model="leadForm.phone"
+              type="tel" 
+              class="w-full h-16 bg-white border border-zinc-200 rounded-[20px] px-6 focus:border-[#FFB800] outline-none transition-colors"
+              placeholder="+998 90 123-45-67"
+            />
+          </div>
+          <div class="flex flex-col sm:flex-row justify-center gap-4">
+             <Button @click="submitLead" :disabled="loading || !leadForm.name || !leadForm.phone" class="h-16 px-10 text-lg shadow-xl shadow-black/20 w-full sm:w-auto">
+               {{ loading ? 'Отправка...' : t.cta.schedule }}
+             </Button>
+             <a href="tel:+998901234567" class="w-full sm:w-auto">
+               <Button variant="white" class="h-16 px-10 text-lg border border-zinc-200 w-full">
+                 {{ t.cta.call }}
+               </Button>
+             </a>
+          </div>
+        </div>
+        <div v-else class="text-center py-8">
+          <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Check :size="40" class="text-white" />
+          </div>
+          <h3 class="text-2xl font-bold mb-2">Заявка принята!</h3>
+          <p class="text-zinc-500">Мы перезвоним вам в ближайшее время.</p>
         </div>
       </div>
     </section>
+
   </main>
 </template>
 
@@ -203,9 +230,36 @@ import { ref, computed, onMounted } from 'vue'
 import { Star, Shield, ArrowRight, Paintbrush, Hammer, Layers, Instagram } from 'lucide-vue-next'
 
 const { t, language } = useLanguage()
-const { fetchServices } = useApi()
+const { fetchServices, createLead } = useApi()
 
 const apiPackages = ref<any[]>([])
+const loading = ref(false)
+const submitted = ref(false)
+const leadForm = ref({ name: '', phone: '' })
+
+const submitLead = async () => {
+  if (!leadForm.value.name || !leadForm.value.phone) return
+  
+  loading.value = true
+  try {
+    await createLead({
+      id: "web_cta_" + Date.now().toString(),
+      name: leadForm.value.name,
+      phone: leadForm.value.phone,
+      source: "phone",
+      status: "new",
+      date: new Date().toISOString().split('T')[0],
+      time: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }),
+      notes: "Заявка с футера главной страницы"
+    })
+    submitted.value = true
+  } catch (e) {
+    console.error('Failed to submit lead from home:', e)
+    alert('Ошибка при отправке. Попробуйте еще раз.')
+  } finally {
+    loading.value = false
+  }
+}
 
 onMounted(async () => {
   try {
@@ -218,6 +272,7 @@ onMounted(async () => {
   }
 })
 
+
 const packages = computed(() => {
   const lang = language.value
   const fallbacks = [
@@ -227,20 +282,29 @@ const packages = computed(() => {
   ]
 
   let result = fallbacks
-  const servicesList = apiPackages.value?.[0]?.services || apiPackages.value
+  // Find category that contains packages (e.g. 'renovation-turnkey' or any cat that has 'economy' service)
+  const pkgCat = apiPackages.value.find(cat => 
+    cat.id === 'renovation-turnkey' || 
+    cat.services?.some((s: any) => ['economy', 'standard', 'premium', 'cosmetic', 'capital', 'designer'].includes(String(s.id).toLowerCase()))
+  )
+
+  const servicesList = pkgCat?.services || (Array.isArray(apiPackages.value[0]?.services) ? null : apiPackages.value)
+
   if (servicesList && servicesList.length > 0) {
     const getLocalized = (field: any, fallback: string = '') => {
+      const lang = language.value
       if (!field) return fallback
-      if (typeof field === 'object') return field[lang] || field.ru || field.uz || fallback
+      if (typeof field === 'object') return field[lang] || field.ru || field.uz || field.en || fallback
       return field
     }
 
-    result = servicesList.slice(0, 3).map((pkg: any, index: number) => ({
+    result = servicesList.filter((s: any) => s.id !== 'renovation-turnkey').slice(0, 3).map((pkg: any, index: number) => ({
       title: getLocalized(pkg.title) || getLocalized(pkg.name) || pkg[`name_${lang}`] || fallbacks[index].title,
       price: pkg.price != null ? String(pkg.price) : fallbacks[index].price,
       desc: getLocalized(pkg.description) || getLocalized(pkg.desc) || pkg[`description_${lang}`] || fallbacks[index].desc,
     }))
   }
+
 
   // Ensure there are always exactly 3 items to avoid indexing errors in the template
   while (result.length < 3) {
