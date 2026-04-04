@@ -89,6 +89,8 @@ export interface Translations {
     description: string;
     schedule: string;
     call: string;
+    getFileName: string;
+    catalogOffer: string;
   };
   // Footer
   footer: {
@@ -313,6 +315,8 @@ export const translations: Record<Language, Translations> = {
       description: 'Оставьте заявку на бесплатный замер. Инженер приедет, осмотрит объект и составит точную смету.',
       schedule: 'Записаться на замер',
       call: 'Позвонить',
+      getFileName: 'vicasa_catalog_2026.pdf',
+      catalogOffer: '🎁 Оставьте заявку и получите PDF-каталог с ценами на 2026 год в подарок!',
     },
     footer: {
       description: 'Создаем пространства для жизни, используя современные технологии и честный подход к смете.',
@@ -561,6 +565,8 @@ export const translations: Record<Language, Translations> = {
       description: 'Bepul o\'lchov uchun ariza qoldiring. Muhandis keladi, ob\'ektni ko\'rib chiqadi va aniq smeta tuzadi.',
       schedule: 'O\'lchovga yozilish',
       call: 'Qo\'ng\'iroq qilish',
+      getFileName: 'vicasa_catalog_2026_uz.pdf',
+      catalogOffer: '🎁 Ariza qoldiring va 2026 yilgi narxlar ko\'rsatilgan PDF-katalogni sovg\'a sifatida oling!',
     },
     footer: {
       description: 'Zamonaviy texnologiyalar va smetaga halol yondashuv yordamida hayot uchun bo\'shliqlar yaratamiz.',

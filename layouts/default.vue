@@ -3,12 +3,14 @@
     <Navbar />
     <slot />
     <Footer />
+    <FloatingSocial />
   </div>
 </template>
 
 <script setup lang="ts">
 import Navbar from '~/components/Navbar.vue'
 import Footer from '~/components/Footer.vue'
+import FloatingSocial from '~/components/FloatingSocial.vue'
 
 useHead({
   script: [

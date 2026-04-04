@@ -16,7 +16,8 @@ export default defineNuxtConfig({
         { property: 'og:title', content: 'Vicasa - Ремонт как искусство' },
         { property: 'og:description', content: 'Премиальный ремонт квартир и домов в Ташкенте под ключ. Гарантия качества и соблюдение сроков.' },
         { property: 'og:type', content: 'website' },
-        { property: 'og:image', content: '/logo.png' }
+        { property: 'og:image', content: '/logo.png' },
+        { name: 'google-site-verification', content: 'IXinhXEblbboW9bBkUfX11T5_IJmbkq65LakiNf2Vj0' }
       ],
       link: [
         { rel: 'icon', type: 'image/png', href: '/favicon.png' },

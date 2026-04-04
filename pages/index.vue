@@ -40,7 +40,9 @@
 
         <div class="relative h-[80vh] w-full animate-fade-in" style="animation-delay: 400ms;">
            <div class="absolute top-0 right-0 w-full h-full bg-zinc-100 rounded-[40px] overflow-hidden">
-              <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&q=80&w=1600" alt="Interior" class="w-full h-full object-cover" />
+              <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&q=80&w=1600" 
+                :alt="language === 'ru' ? 'Vicasa - Премиальный ремонт квартир в Ташкенте' : 'Vicasa - Toshkentda premium kvartiralarni ta\'mirlash'" 
+                class="w-full h-full object-cover" />
               
               <!-- Floating Card -->
               <div class="absolute bottom-8 left-8 bg-white/90 backdrop-blur-xl p-6 rounded-[32px] shadow-2xl max-w-xs">
@@ -182,9 +184,13 @@ ection>
     <section class="pb-32 px-6 text-center">
       <div class="bg-zinc-50 rounded-[40px] p-16 md:p-24">
         <h2 class="text-4xl md:text-6xl font-extrabold mb-8">{{ t.cta.title }}</h2>
-        <p class="text-xl text-zinc-500 mb-12 max-w-xl mx-auto">
+        <p class="text-xl text-zinc-500 mb-6 max-w-xl mx-auto">
           {{ t.cta.description }}
         </p>
+        
+        <div class="bg-[#FFB800]/10 border border-[#FFB800]/20 rounded-2xl p-4 mb-8 text-[#E0A200] font-bold text-sm animate-pulse">
+          {{ t.cta.catalogOffer }}
+        </div>
         
         <div v-if="!submitted" class="max-w-md mx-auto">
           <div class="flex flex-col gap-4 mb-8">

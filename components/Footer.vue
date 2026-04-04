@@ -6,6 +6,10 @@
           <img src="~/assets/logofull.png" alt="Vicasa" class="h-12 w-auto mb-6 brightness-0" />
           <p class="text-black/70 text-lg leading-relaxed max-w-md">
             {{ t.footer.description }}
+            <br /><br />
+            <span class="text-xs font-medium opacity-50 uppercase tracking-widest">
+              {{ language === 'ru' ? 'Ремонт квартир, отделка домов, дизайн интерьера в Ташкенте' : 'Toshkentda kvartira va uylarni ta\'mirlash, dizayn xizmatlari' }}
+            </span>
           </p>
         </div>
         
@@ -53,5 +57,5 @@
 import { Instagram, Send } from 'lucide-vue-next'
 import { useLanguage } from '~/composables/useLanguage'
 
-const { t } = useLanguage()
+const { t, language } = useLanguage()
 </script>
