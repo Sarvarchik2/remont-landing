@@ -184,13 +184,9 @@ ection>
     <section class="pb-32 px-6 text-center">
       <div class="bg-zinc-50 rounded-[40px] p-16 md:p-24">
         <h2 class="text-4xl md:text-6xl font-extrabold mb-8">{{ t.cta.title }}</h2>
-        <p class="text-xl text-zinc-500 mb-6 max-w-xl mx-auto">
+        <p class="text-xl text-zinc-500 mb-12 max-w-xl mx-auto">
           {{ t.cta.description }}
         </p>
-        
-        <div class="bg-[#FFB800]/10 border border-[#FFB800]/20 rounded-2xl p-4 mb-8 text-[#E0A200] font-bold text-sm animate-pulse">
-          {{ t.cta.catalogOffer }}
-        </div>
         
         <div v-if="!submitted" class="max-w-md mx-auto">
           <div class="flex flex-col gap-4 mb-8">
