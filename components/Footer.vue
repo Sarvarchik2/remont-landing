@@ -3,7 +3,7 @@
     <div class="container mx-auto px-6">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
         <div class="col-span-1 md:col-span-2">
-          <div class="text-3xl font-serif italic mb-6 text-black">RemontUz</div>
+          <img src="~/assets/logofull.png" alt="Vicasa" class="h-12 w-auto mb-6 brightness-0" />
           <p class="text-black/70 text-lg leading-relaxed max-w-md">
             {{ t.footer.description }}
           </p>
@@ -28,10 +28,10 @@
               Ташкент, Центр
             </li>
             <li class="flex gap-4 mt-4">
-              <a href="#" class="w-10 h-10 rounded-full bg-black/10 flex items-center justify-center hover:bg-black hover:text-white transition-colors">
+              <a href="https://www.instagram.com/vicasa.group/" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-black/10 flex items-center justify-center hover:bg-black hover:text-white transition-colors">
                 <Instagram :size="18" />
               </a>
-              <a href="#" class="w-10 h-10 rounded-full bg-black/10 flex items-center justify-center hover:bg-black hover:text-white transition-colors">
+              <a href="https://t.me/vicasa_bot" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-black/10 flex items-center justify-center hover:bg-black hover:text-white transition-colors">
                 <Send :size="18" />
               </a>
             </li>

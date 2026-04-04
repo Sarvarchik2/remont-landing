@@ -5,11 +5,7 @@
   )">
     <div class="container mx-auto px-6 flex items-center justify-between">
       <NuxtLink to="/" class="flex items-center gap-2 group">
-        <div
-          class="w-10 h-10 bg-[#FFB800] rounded-full flex items-center justify-center text-black font-serif italic text-xl group-hover:scale-110 transition-transform shadow-lg shadow-[#FFB800]/20">
-          R
-        </div>
-        <span class="text-xl font-bold text-black tracking-tight">RemontUz</span>
+        <img src="~/assets/logofull.png" alt="Vicasa" class="h-10 w-auto group-hover:scale-105 transition-transform" />
       </NuxtLink>
 
       <!-- Desktop Menu -->

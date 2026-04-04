@@ -147,8 +147,8 @@
              <h2 class="text-4xl font-extrabold mb-4 text-black">{{ t.social.title }}</h2>
              <p class="text-zinc-500">{{ t.social.description }}</p>
            </div>
-           <a href="#" class="bg-black text-white px-8 py-4 rounded-full font-bold flex items-center gap-2 hover:bg-zinc-800 transition-colors shadow-lg">
-             <Instagram :size="20" /> @remontuz
+           <a href="https://www.instagram.com/vicasa.group/" target="_blank" rel="noopener noreferrer" class="bg-black text-white px-8 py-4 rounded-full font-bold flex items-center gap-2 hover:bg-zinc-800 transition-colors shadow-lg">
+             <Instagram :size="20" /> @vicasa.group
            </a>
          </div>
  
