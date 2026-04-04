@@ -3,7 +3,7 @@
     @mousedown="setIsDragging(true)" @mouseup="setIsDragging(false)" @mouseleave="setIsDragging(false)"
     @mousemove="handleMouseMove" @touchmove="handleTouchMove">
     <div class="absolute inset-0">
-      <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=1080"
+      <img src="/img/after.png"
         alt="After" class="w-full h-full object-cover" />
       <span
         class="absolute top-6 right-6 bg-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest text-black shadow-sm">{{
@@ -12,7 +12,7 @@
 
     <div class="absolute inset-0 overflow-hidden border-r-2 border-white" :style="{ width: sliderPosition + '%' }">
       <img
-        src="https://images.unsplash.com/photo-1673978484281-e9370ac3b81c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbXB0eSUyMGNvbmNyZXRlJTIwYXBhcnRtZW50JTIwcm9vbSUyMGNvbnN0cnVjdGlvbiUyMHNpdGV8ZW58MXx8fHwxNzcwODM4NDQ5fDA&ixlib=rb-4.1.0&q=80&w=1080"
+        src="/img/before.png"
         alt="Before" class="w-full h-full object-cover max-w-none" style="width: 100vw;" />
       <span
         class="absolute top-6 left-6 bg-black px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest text-white shadow-sm">{{

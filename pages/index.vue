@@ -40,12 +40,12 @@
 
         <div class="relative h-[80vh] w-full animate-fade-in" style="animation-delay: 400ms;">
            <div class="absolute top-0 right-0 w-full h-full bg-zinc-100 rounded-[40px] overflow-hidden">
-              <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&q=80&w=1600" 
+              <img src="/img/header.png" 
                 :alt="language === 'ru' ? 'Vicasa - Премиальный ремонт квартир в Ташкенте' : 'Vicasa - Toshkentda premium kvartiralarni ta\'mirlash'" 
                 class="w-full h-full object-cover" />
               
               <!-- Floating Card -->
-              <div class="absolute bottom-8 left-8 bg-white/90 backdrop-blur-xl p-6 rounded-[32px] shadow-2xl max-w-xs">
+              <!-- <div class="absolute bottom-8 left-8 bg-white/90 backdrop-blur-xl p-6 rounded-[32px] shadow-2xl max-w-xs">
                  <div class="flex items-start gap-4 mb-4">
                    <div class="w-12 h-12 bg-zinc-100 rounded-full flex items-center justify-center">
                      <Shield :size="24" class="text-[#FFB800]" />
@@ -58,7 +58,7 @@
                  <div class="h-1 w-full bg-zinc-100 rounded-full overflow-hidden">
                    <div class="h-full bg-[#FFB800] w-3/4 rounded-full"></div>
                  </div>
-              </div>
+              </div> -->
            </div>
         </div>
       </div>
@@ -164,7 +164,6 @@
          </div>
       </div>
     </section>
-ection>
 
     <!-- FAQ -->
     <section class="py-32">
@@ -375,10 +374,10 @@ const processItems = computed(() => [
 ])
 
 const instaImages = [
-  "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=400",
-  "https://images.unsplash.com/photo-1595846519845-68e298c2edd8?auto=format&fit=crop&q=80&w=400",
-  "https://images.unsplash.com/photo-1574359411659-15573a27fd0c?auto=format&fit=crop&q=80&w=400",
-  "https://images.unsplash.com/photo-1533750516457-a7f992034fec?auto=format&fit=crop&q=80&w=400"
+  "/img/inst1.png",
+  "/img/inst2.png",
+  "/img/inst3.png",
+  "/img/inst4.png"
 ]
 </script>
 
