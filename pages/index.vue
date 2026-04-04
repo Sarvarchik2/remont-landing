@@ -198,14 +198,14 @@ ection>
               v-model="leadForm.phone"
               type="tel" 
               class="w-full h-16 bg-white border border-zinc-200 rounded-[20px] px-6 focus:border-[#FFB800] outline-none transition-colors"
-              placeholder="+998 90 123-45-67"
+              placeholder="+998 90 354-76-66"
             />
           </div>
           <div class="flex flex-col sm:flex-row justify-center gap-4">
              <Button @click="submitLead" :disabled="loading || !leadForm.name || !leadForm.phone" class="h-16 px-10 text-lg shadow-xl shadow-black/20 w-full sm:w-auto">
                {{ loading ? 'Отправка...' : t.cta.schedule }}
              </Button>
-             <a href="tel:+998901234567" class="w-full sm:w-auto">
+             <a href="tel:+998903547666" class="w-full sm:w-auto">
                <Button variant="white" class="h-16 px-10 text-lg border border-zinc-200 w-full">
                  {{ t.cta.call }}
                </Button>
@@ -231,6 +231,57 @@ import { Star, Shield, ArrowRight, Paintbrush, Hammer, Layers, Instagram } from 
 
 const { t, language } = useLanguage()
 const { fetchServices, createLead } = useApi()
+
+useHead({
+  title: computed(() => language.value === 'ru' 
+    ? 'Vicasa - Ремонт квартир и домов в Ташкенте под ключ' 
+    : 'Vicasa - Toshkentda uylarni va kvartiralarni ta\'mirlash'),
+  meta: [
+    { 
+      name: 'description', 
+      content: computed(() => language.value === 'ru' 
+        ? 'Профессиональный ремонт квартир, домов и офисов в Ташкенте. Дизайн-проекты, качественная отделка и гарантия 2 года от Vicasa.' 
+        : 'Toshkentda kvartira, uy va ofislarni professional ta\'mirlash. Vicasa-dan dizayn-loyihalar, sifatli pardozlash va 2 yillik kafolat.')
+    },
+    {
+      name: 'keywords',
+      content: computed(() => language.value === 'ru'
+        ? 'ремонт квартир ташкент, дизайн интерьера, отделочные работы, ремонт домов, евроремонт, vicasa ремонт'
+        : 'toshkentda uylarni ta\'mirlash, interyer dizayni, pardozlash ishlari, kvartira ta\'mirlash, vicasa ta\'mirlash')
+    }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": language.value === 'ru' ? "Сколько длится ремонт квартир в Ташкенте?" : "Toshkentda ta'mirlash qancha davom etadi?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": language.value === 'ru' 
+                ? "Косметический ремонт занимает от 1 до 2 месяцев. Капитальный — от 3 до 5 месяцев в зависимости от площади и сложности."
+                : "Kosmetik ta'mirlash 1 dan 2 oygacha, kapital — 3 dan 5 oygacha davom etadi."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": language.value === 'ru' ? "Дает ли Vicasa гарантию на ремонт?" : "Vicasa ta'mirlashga kafolat beradimi?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": language.value === 'ru' 
+                ? "Да, мы даем официальную гарантию 2 года на все виды отделочных работ и 1 год на инженерные системы по договору."
+                : "Ha, biz barcha ish turlariga 2 yil va muhandislik tizimlariga 1 yil rasmiy kafolat beramiz."
+            }
+          }
+        ]
+      })
+    }
+  ]
+})
 
 const apiPackages = ref<any[]>([])
 const loading = ref(false)

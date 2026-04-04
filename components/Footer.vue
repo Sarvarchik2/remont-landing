@@ -22,7 +22,7 @@
           <h3 class="font-bold text-lg mb-6 text-black">{{ t.footer.contact }}</h3>
           <ul class="space-y-4 text-black/70">
             <li class="flex items-center gap-3">
-              +998 90 123-45-67
+              +998 90 354-76-66
             </li>
             <li class="flex items-center gap-3">
               Ташкент, Центр

@@ -128,7 +128,7 @@
                 v-model="contactData.phone" 
                 type="tel" 
                 class="w-full h-16 bg-zinc-50 border border-zinc-200 rounded-[20px] px-6 text-zinc-900 focus:border-[#FFB800] outline-none transition-colors"
-                placeholder="+998 90 123-45-67"
+                placeholder="+998 90 354-76-66"
               />
             </div>
           </div>
@@ -168,6 +168,26 @@ const route = useRoute()
 
 const { t, language } = useLanguage()
 const { fetchSettings, createLead } = useApi()
+
+useHead({
+  title: computed(() => language.value === 'ru' 
+    ? 'Калькулятор стоимости ремонта в Ташкенте | Рассчитать онлайн' 
+    : 'Ta\'mirlash narxini hisoblash Toshkentda | Onlayn kalkulyator'),
+  meta: [
+    { 
+      name: 'description', 
+      content: computed(() => language.value === 'ru' 
+        ? 'Рассчитайте примерную стоимость ремонта квартиры или дома онлайн. Учитываем площадь, тип помещения и уровень отделки.' 
+        : 'Onlayn kvartira yoki uy ta\'mirlash narxini hisoblang. Maydon, xona turi va darajasini hisobga olamiz.')
+    },
+    {
+      name: 'keywords',
+      content: computed(() => language.value === 'ru'
+        ? 'калькулятор ремонта ташкент, расчет стоимости отделки, сколько стоит ремонт'
+        : 'ta\'mirlash kalkulyatori toshkent, xarajatlarni hisoblash, ta\'mirlash qancha turadi')
+    }
+  ]
+})
 
 const step = ref(1)
 const loading = ref(true)

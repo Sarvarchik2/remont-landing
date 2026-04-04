@@ -87,6 +87,26 @@ import { Layout, Layers, Zap, Droplets, Paintbrush, Hammer, Wrench, Lightbulb, P
 const { t, language } = useLanguage()
 const { fetchServices, fetchCatalog } = useApi()
 
+useHead({
+  title: computed(() => language.value === 'ru' 
+    ? 'Услуги и цены на ремонт в Ташкенте | Vicasa' 
+    : 'Ta\'mirlash xizmatlari va narxlari Toshkentda | Vicasa'),
+  meta: [
+    { 
+      name: 'description', 
+      content: computed(() => language.value === 'ru' 
+        ? 'Цены на косметический, капитальный и дизайнерский ремонт в Ташкенте. Узнайте стоимость квадратного метра и перечень работ.' 
+        : 'Toshkentda kosmetik, kapital va dizaynerlik ta\'mirlash narxlari. Kvadrat metr narxi va ishlar ro\'yxati bilan tanishing.')
+    },
+    {
+      name: 'keywords',
+      content: computed(() => language.value === 'ru'
+        ? 'цены на ремонт ташкент, стоимость ремонта квартиры, прайс-лист отделочные работы'
+        : 'ta\'mirlash narxlari toshkent, kvartira ta\'mirlash narxi, pardozlash ishlari narxlari')
+    }
+  ]
+})
+
 const loading = ref(true)
 const rawServicesData = ref<any[]>([])
 const rawCatalogData = ref<any[]>([])
