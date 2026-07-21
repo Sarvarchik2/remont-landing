@@ -61,7 +61,6 @@ import { Menu as MenuIcon, X } from 'lucide-vue-next'
 import { cn } from '~/utils/cn'
 import { useLanguage } from '~/composables/useLanguage'
 import LanguageSwitch from './LanguageSwitch.vue'
-import Button from './Button.vue'
 
 const { t } = useLanguage()
 const route = useRoute()

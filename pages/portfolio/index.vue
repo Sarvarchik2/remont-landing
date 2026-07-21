@@ -25,7 +25,7 @@
 
       <div v-else-if="filtered.length === 0" class="py-20 text-center">
         <div class="text-6xl mb-6">🏜️</div>
-        <h3 class="text-2xl font-bold text-zinc-400">Проектов пока нет</h3>
+        <h3 class="text-2xl font-bold text-zinc-400">{{ language === 'ru' ? 'Проектов пока нет' : 'Hozircha loyihalar yo\'q' }}</h3>
       </div>
 
       <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -50,16 +50,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { ArrowRight } from 'lucide-vue-next'
 
 const { t, language } = useLanguage()
 
-const { fetchPortfolio, baseURL } = useApi()
+const { fetchPortfolio } = useApi()
 
 const filter = ref('all')
-const items = ref<any[]>([])
-const loading = ref(true)
+
+// Server-rendered so projects appear in the crawlable HTML.
+const { data: items, pending: loading } = useAsyncData('portfolio-list', async () => {
+  const data = await fetchPortfolio()
+  return Array.isArray(data) ? data : []
+}, { default: () => [] as any[] })
 
 const displayItems = computed(() => {
   const lang = language.value
@@ -81,17 +85,6 @@ const filterOptions = computed(() => [
   { id: 'loft', label: t.value.portfolioPage.houses },
   { id: 'classic', label: t.value.portfolioPage.commercial }
 ])
-
-onMounted(async () => {
-  try {
-    const data = await fetchPortfolio()
-    items.value = Array.isArray(data) ? data : []
-  } catch (e) {
-    console.error('Failed to fetch portfolio:', e)
-  } finally {
-    loading.value = false
-  }
-})
 
 const filtered = computed(() => {
   if (filter.value === 'all') return displayItems.value

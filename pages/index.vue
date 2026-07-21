@@ -40,8 +40,8 @@
 
         <div class="relative h-[80vh] w-full animate-fade-in" style="animation-delay: 400ms;">
            <div class="absolute top-0 right-0 w-full h-full bg-zinc-100 rounded-[40px] overflow-hidden">
-              <img src="/img/header.png" 
-                :alt="language === 'ru' ? 'Vicasa - Премиальный ремонт квартир в Ташкенте' : 'Vicasa - Toshkentda premium kvartiralarni ta\'mirlash'" 
+              <img src="/img/header.jpg" width="1194" height="1600" fetchpriority="high"
+                :alt="language === 'ru' ? 'Vicasa - Премиальный ремонт квартир в Ташкенте' : 'Vicasa - Toshkentda premium kvartiralarni ta\'mirlash'"
                 class="w-full h-full object-cover" />
               
               <!-- Floating Card -->
@@ -156,7 +156,7 @@
  
          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div v-for="(img, i) in instaImages" :key="i" class="aspect-square rounded-[24px] overflow-hidden group relative border border-zinc-200">
-               <img :src="img" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+               <img :src="img" loading="lazy" width="900" height="900" alt="Vicasa - пример ремонта" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
                  <Instagram class="text-white drop-shadow-lg" :size="32" />
                </div>
@@ -189,11 +189,11 @@
         
         <div v-if="!submitted" class="max-w-md mx-auto">
           <div class="flex flex-col gap-4 mb-8">
-            <input 
+            <input
               v-model="leadForm.name"
-              type="text" 
+              type="text"
               class="w-full h-16 bg-white border border-zinc-200 rounded-[20px] px-6 focus:border-[#FFB800] outline-none transition-colors"
-              placeholder="Ваше имя"
+              :placeholder="t.cta.namePlaceholder"
             />
             <input 
               v-model="leadForm.phone"
@@ -204,7 +204,7 @@
           </div>
           <div class="flex flex-col sm:flex-row justify-center gap-4">
              <Button @click="submitLead" :disabled="loading || !leadForm.name || !leadForm.phone" class="h-16 px-10 text-lg shadow-xl shadow-black/20 w-full sm:w-auto">
-               {{ loading ? 'Отправка...' : t.cta.schedule }}
+               {{ loading ? t.cta.sending : t.cta.schedule }}
              </Button>
              <a href="tel:+998903547666" class="w-full sm:w-auto">
                <Button variant="white" class="h-16 px-10 text-lg border border-zinc-200 w-full">
@@ -217,8 +217,8 @@
           <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
             <Check :size="40" class="text-white" />
           </div>
-          <h3 class="text-2xl font-bold mb-2">Заявка принята!</h3>
-          <p class="text-zinc-500">Мы перезвоним вам в ближайшее время.</p>
+          <h3 class="text-2xl font-bold mb-2">{{ t.cta.acceptedTitle }}</h3>
+          <p class="text-zinc-500">{{ t.cta.acceptedDesc }}</p>
         </div>
       </div>
     </section>
@@ -227,8 +227,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import { Star, Shield, ArrowRight, Paintbrush, Hammer, Layers, Instagram } from 'lucide-vue-next'
+import { ref, computed } from 'vue'
+import { Star, ArrowRight, Paintbrush, Hammer, Layers, Instagram } from 'lucide-vue-next'
 
 const { t, language } = useLanguage()
 const { fetchServices, createLead } = useApi()
@@ -284,45 +284,35 @@ useHead({
   ]
 })
 
-const apiPackages = ref<any[]>([])
 const loading = ref(false)
 const submitted = ref(false)
 const leadForm = ref({ name: '', phone: '' })
 
 const submitLead = async () => {
   if (!leadForm.value.name || !leadForm.value.phone) return
-  
+
   loading.value = true
   try {
     await createLead({
-      id: "web_cta_" + Date.now().toString(),
       name: leadForm.value.name,
       phone: leadForm.value.phone,
-      source: "phone",
-      status: "new",
-      date: new Date().toISOString().split('T')[0],
-      time: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }),
-      notes: "Заявка с футера главной страницы"
+      source: 'Главная страница',
+      notes: 'Заявка с CTA-формы главной страницы',
     })
     submitted.value = true
   } catch (e) {
     console.error('Failed to submit lead from home:', e)
-    alert('Ошибка при отправке. Попробуйте еще раз.')
+    alert(t.value.calculatorPage.errorSend)
   } finally {
     loading.value = false
   }
 }
 
-onMounted(async () => {
-  try {
-    const data = await fetchServices()
-    if (Array.isArray(data) && data.length > 0) {
-      apiPackages.value = data
-    }
-  } catch (e) {
-    console.error('Failed to fetch services for home:', e)
-  }
-})
+// Rendered on the server so package content is present in the initial HTML.
+const { data: apiPackages } = await useAsyncData('home-services', async () => {
+  const data = await fetchServices()
+  return Array.isArray(data) ? data : []
+}, { default: () => [] as any[] })
 
 
 const packages = computed(() => {
@@ -374,10 +364,10 @@ const processItems = computed(() => [
 ])
 
 const instaImages = [
-  "/img/inst1.png",
-  "/img/inst2.png",
-  "/img/inst3.png",
-  "/img/inst4.png"
+  "/img/inst1.jpg",
+  "/img/inst2.jpg",
+  "/img/inst3.jpg",
+  "/img/inst4.jpg"
 ]
 </script>
 

@@ -89,6 +89,10 @@ export interface Translations {
     description: string;
     schedule: string;
     call: string;
+    namePlaceholder: string;
+    sending: string;
+    acceptedTitle: string;
+    acceptedDesc: string;
   };
   // Footer
   footer: {
@@ -167,6 +171,14 @@ export interface Translations {
     phone: string;
     successTitle: string;
     successDesc: string;
+    namePlaceholder: string;
+    calculating: string;
+    loadingPrices: string;
+    leaveContacts: string;
+    submitRequest: string;
+    sending: string;
+    backToStart: string;
+    errorSend: string;
   };
 
   // Login Page
@@ -313,6 +325,10 @@ export const translations: Record<Language, Translations> = {
       description: 'Оставьте заявку на бесплатный замер. Инженер приедет, осмотрит объект и составит точную смету.',
       schedule: 'Записаться на замер',
       call: 'Позвонить',
+      namePlaceholder: 'Ваше имя',
+      sending: 'Отправка...',
+      acceptedTitle: 'Заявка принята!',
+      acceptedDesc: 'Мы перезвоним вам в ближайшее время.',
     },
     footer: {
       description: 'Создаем пространства для жизни, используя современные технологии и честный подход к смете.',
@@ -321,9 +337,9 @@ export const translations: Record<Language, Translations> = {
       calculator: 'Калькулятор',
       services: 'Услуги',
       contact: 'Связь',
-      rights: '© 2026 Vicasa. All rights reserved.',
-      privacy: 'Privacy Policy',
-      terms: 'Terms of Service',
+      rights: '© 2026 Vicasa. Все права защищены.',
+      privacy: 'Политика конфиденциальности',
+      terms: 'Условия использования',
     },
     servicesPage: {
       title: 'Наши услуги',
@@ -421,6 +437,14 @@ export const translations: Record<Language, Translations> = {
       phone: 'Номер телефона',
       successTitle: 'Заявка отправлена!',
       successDesc: 'Мы свяжемся с вами в течение 15 минут для уточнения деталей.',
+      namePlaceholder: 'Иван Иванов',
+      calculating: 'Считаем смету...',
+      loadingPrices: 'Загрузка цен...',
+      leaveContacts: 'Оставьте контакты',
+      submitRequest: 'Отправить заявку',
+      sending: 'Отправка...',
+      backToStart: 'Вернуться в начало',
+      errorSend: 'Произошла ошибка при отправке. Пожалуйста, попробуйте позже.',
     },
 
     loginPage: {
@@ -561,6 +585,10 @@ export const translations: Record<Language, Translations> = {
       description: 'Bepul o\'lchov uchun ariza qoldiring. Muhandis keladi, ob\'ektni ko\'rib chiqadi va aniq smeta tuzadi.',
       schedule: 'O\'lchovga yozilish',
       call: 'Qo\'ng\'iroq qilish',
+      namePlaceholder: 'Ismingiz',
+      sending: 'Yuborilmoqda...',
+      acceptedTitle: 'Ariza qabul qilindi!',
+      acceptedDesc: 'Tez orada sizga qo\'ng\'iroq qilamiz.',
     },
     footer: {
       description: 'Zamonaviy texnologiyalar va smetaga halol yondashuv yordamida hayot uchun bo\'shliqlar yaratamiz.',
@@ -669,6 +697,14 @@ export const translations: Record<Language, Translations> = {
       phone: 'Telefon raqamingiz',
       successTitle: 'Sorovingiz yuborildi!',
       successDesc: 'Biz siz bilan 15 daqiqa ichida bog\'lanamiz.',
+      namePlaceholder: 'Alisher Aliyev',
+      calculating: 'Smeta hisoblanmoqda...',
+      loadingPrices: 'Narxlar yuklanmoqda...',
+      leaveContacts: 'Kontaktlaringizni qoldiring',
+      submitRequest: 'Arizani yuborish',
+      sending: 'Yuborilmoqda...',
+      backToStart: 'Boshiga qaytish',
+      errorSend: 'Yuborishda xatolik yuz berdi. Iltimos, keyinroq urinib ko\'ring.',
     },
 
     loginPage: {

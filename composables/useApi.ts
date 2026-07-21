@@ -1,27 +1,30 @@
 export const useApi = () => {
   const config = useRuntimeConfig()
-  const baseURL = 'https://api.ulaskins.uz/api/v1'
+  // Optional external CMS. When unset, fetches resolve to null and pages
+  // fall back to their built-in content instead of hitting a dead domain.
+  const baseURL = config.public.apiBase as string
 
-  const fetchServices = async () => {
-    return await $fetch(`${baseURL}/services/`)
+  const get = async <T = any>(path: string): Promise<T | null> => {
+    if (!baseURL) return null
+    try {
+      return await $fetch<T>(`${baseURL}${path}`)
+    } catch (e) {
+      console.error(`[useApi] GET ${path} failed:`, e)
+      return null
+    }
   }
 
-  const fetchPortfolio = async () => {
-    return await $fetch(`${baseURL}/portfolio/`)
-  }
+  const fetchServices = () => get('/services/')
+  const fetchPortfolio = () => get('/portfolio/')
+  const fetchSettings = () => get('/settings/')
+  const fetchCatalog = () => get('/catalog/')
 
-  const fetchSettings = async () => {
-    return await $fetch(`${baseURL}/settings/`)
-  }
-
-  const fetchCatalog = async () => {
-    return await $fetch(`${baseURL}/catalog/`)
-  }
-
+  // Leads always go through our own server route (Telegram delivery),
+  // regardless of whether an external CMS is configured.
   const createLead = async (data: any) => {
-    return await $fetch(`${baseURL}/leads/`, {
+    return await $fetch('/api/lead', {
       method: 'POST',
-      body: data
+      body: data,
     })
   }
 
@@ -31,6 +34,6 @@ export const useApi = () => {
     fetchSettings,
     fetchCatalog,
     createLead,
-    baseURL
+    baseURL,
   }
 }

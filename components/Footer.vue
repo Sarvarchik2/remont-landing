@@ -45,8 +45,8 @@
       <div class="border-t border-black/10 pt-8 flex flex-col md:flex-row justify-between items-center text-black/60 text-sm">
         <div>{{ t.footer.rights }}</div>
         <div class="flex gap-6 mt-4 md:mt-0">
-          <a href="#" class="hover:text-black transition-colors">{{ t.footer.privacy }}</a>
-          <a href="#" class="hover:text-black transition-colors">{{ t.footer.terms }}</a>
+          <NuxtLink to="/privacy" class="hover:text-black transition-colors">{{ t.footer.privacy }}</NuxtLink>
+          <NuxtLink to="/terms" class="hover:text-black transition-colors">{{ t.footer.terms }}</NuxtLink>
         </div>
       </div>
     </div>

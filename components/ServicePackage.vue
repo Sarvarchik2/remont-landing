@@ -23,7 +23,7 @@
             <div class="absolute bottom-8 left-8 right-8">
                <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/30 text-white mb-4">
                   <span class="w-2 h-2 bg-[#FFB800] rounded-full animate-pulse"></span>
-                  <span class="text-xs font-bold uppercase tracking-widest">RemontUz Premium</span>
+                  <span class="text-xs font-bold uppercase tracking-widest">Vicasa Premium</span>
                </div>
             </div>
           </div>

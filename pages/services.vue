@@ -53,9 +53,13 @@
       <div class="bg-zinc-50 rounded-[40px] p-12 md:p-20">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>
-            <SectionHeading title="Дизайн-проект" subtitle="Визуализация" />
+            <SectionHeading
+              :title="language === 'ru' ? 'Дизайн-проект' : 'Dizayn-loyiha'"
+              :subtitle="language === 'ru' ? 'Визуализация' : 'Vizualizatsiya'" />
             <p class="text-xl text-zinc-500 leading-relaxed mb-10">
-              Мы не просто делаем ремонт, мы создаем эргономичное пространство для жизни. Чертежи исключают ошибки строителей и экономят до 20% бюджета.
+              {{ language === 'ru'
+                ? 'Мы не просто делаем ремонт, мы создаем эргономичное пространство для жизни. Чертежи исключают ошибки строителей и экономят до 20% бюджета.'
+                : 'Biz shunchaki ta\'mirlash qilmaymiz, balki hayot uchun ergonomik makon yaratamiz. Chizmalar quruvchilar xatolarini bartaraf etadi va byudjetning 20% gacha tejaydi.' }}
             </p>
             <div class="grid grid-cols-2 gap-6 mb-10">
                <div v-for="(item, i) in processItems" :key="i" class="bg-white p-4 rounded-[20px] flex items-center gap-3 shadow-sm">
@@ -65,7 +69,9 @@
                  <span class="font-bold text-sm">{{ item.label }}</span>
                </div>
             </div>
-            <Button variant="primary" class="h-16 w-full md:w-auto">Заказать проект</Button>
+            <NuxtLink to="/calculator">
+              <Button variant="primary" class="h-16 w-full md:w-auto">{{ language === 'ru' ? 'Заказать проект' : 'Loyiha buyurtma qilish' }}</Button>
+            </NuxtLink>
           </div>
           <div class="relative">
              <div class="aspect-square bg-zinc-200 rounded-[32px] overflow-hidden rotate-3 hover:rotate-0 transition-transform duration-500">
@@ -107,10 +113,6 @@ useHead({
   ]
 })
 
-const loading = ref(true)
-const rawServicesData = ref<any[]>([])
-const rawCatalogData = ref<any[]>([])
-
 const getIcon = (name: string) => {
   const iconMap: any = { Layout, Layers, Zap, Droplets, Paintbrush, Hammer, Wrench, Lightbulb, Pipette }
   return iconMap[name] || Wrench
@@ -124,26 +126,16 @@ const getLocalized = (field: any, fallback: string = '') => {
 }
 
 
-onMounted(async () => {
-  try {
-    const [servicesData, catalogData] = await Promise.all([
-      fetchServices(),
-      fetchCatalog()
-    ])
-    
-    if (Array.isArray(servicesData)) {
-      rawServicesData.value = servicesData
-    }
-    
-    if (Array.isArray(catalogData)) {
-      rawCatalogData.value = catalogData
-    }
-  } catch (e) {
-    console.error('Failed to fetch services:', e)
-  } finally {
-    loading.value = false
-  }
-})
+// Server-rendered so services/catalog content is in the initial HTML for SEO.
+const { data: rawServicesData } = await useAsyncData('services-list', async () => {
+  const data = await fetchServices()
+  return Array.isArray(data) ? data : []
+}, { default: () => [] as any[] })
+
+const { data: rawCatalogData } = await useAsyncData('services-catalog', async () => {
+  const data = await fetchCatalog()
+  return Array.isArray(data) ? data : []
+}, { default: () => [] as any[] })
 
 
 const packages = computed(() => {
@@ -241,10 +233,17 @@ const individualWorks = computed(() => {
 })
 
 
-const processItems = [
-  { icon: Layout, label: 'Планировка' },
-  { icon: Layers, label: '3D Виды' },
-  { icon: Zap, label: 'Электрика' },
-  { icon: Droplets, label: 'Сантехника' }
-]
+const processItems = computed(() => language.value === 'ru'
+  ? [
+      { icon: Layout, label: 'Планировка' },
+      { icon: Layers, label: '3D Виды' },
+      { icon: Zap, label: 'Электрика' },
+      { icon: Droplets, label: 'Сантехника' },
+    ]
+  : [
+      { icon: Layout, label: 'Planirovka' },
+      { icon: Layers, label: '3D Ko\'rinishlar' },
+      { icon: Zap, label: 'Elektr' },
+      { icon: Droplets, label: 'Santexnika' },
+    ])
 </script>

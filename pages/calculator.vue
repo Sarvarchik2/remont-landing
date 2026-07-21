@@ -85,13 +85,13 @@
           </div>
 
           <Button @click="calculate" variant="primary" class="w-full h-16 text-lg" :disabled="loading">
-            {{ loading ? 'Загрузка цен...' : t.calculatorPage.calculate }}
+            {{ loading ? t.calculatorPage.loadingPrices : t.calculatorPage.calculate }}
           </Button>
         </div>
 
         <div v-else-if="step === 2" class="py-20 text-center">
           <div class="w-16 h-16 border-4 border-[#FFB800] border-t-transparent rounded-full animate-spin mx-auto mb-8"></div>
-          <h3 class="text-2xl font-bold text-zinc-900">Считаем смету...</h3>
+          <h3 class="text-2xl font-bold text-zinc-900">{{ t.calculatorPage.calculating }}</h3>
         </div>
 
 
@@ -111,7 +111,7 @@
 
 
         <div v-else-if="step === 4" class="space-y-8">
-          <SectionHeading :title="t.calculatorPage.requestQuote" subtitle="Оставьте контакты" />
+          <SectionHeading :title="t.calculatorPage.requestQuote" :subtitle="t.calculatorPage.leaveContacts" />
           <div class="space-y-4">
             <div>
               <label class="block text-sm font-bold text-zinc-500 mb-2 uppercase tracking-widest">{{ t.calculatorPage.name }}</label>
@@ -119,7 +119,7 @@
                 v-model="contactData.name" 
                 type="text" 
                 class="w-full h-16 bg-zinc-50 border border-zinc-200 rounded-[20px] px-6 text-zinc-900 focus:border-[#FFB800] outline-none transition-colors"
-                placeholder="Иван Иванов"
+                :placeholder="t.calculatorPage.namePlaceholder"
               />
             </div>
             <div>
@@ -134,7 +134,7 @@
           </div>
           <div class="flex flex-col gap-4">
             <Button @click="submitLead" variant="primary" class="w-full h-16 text-lg" :disabled="submitting || !contactData.name || !contactData.phone">
-              {{ submitting ? 'Отправка...' : 'Отправить заявку' }}
+              {{ submitting ? t.calculatorPage.sending : t.calculatorPage.submitRequest }}
             </Button>
             <Button variant="outline" @click="step = 3" class="w-full h-16 text-lg border-zinc-200 text-zinc-900" :disabled="submitting">
               {{ t.calculatorPage.back }}
@@ -149,7 +149,7 @@
            </div>
            <h3 class="text-3xl font-bold text-zinc-900 mb-4">{{ t.calculatorPage.successTitle }}</h3>
            <p class="text-xl text-zinc-500 mb-10">{{ t.calculatorPage.successDesc }}</p>
-           <Button variant="primary" @click="step = 1" class="w-full h-16 max-w-xs mx-auto">Вернуться в начало</Button>
+           <Button variant="primary" @click="step = 1" class="w-full h-16 max-w-xs mx-auto">{{ t.calculatorPage.backToStart }}</Button>
         </div>
 
       </div>
@@ -158,7 +158,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { Check } from 'lucide-vue-next'
 import { cn } from '~/utils/cn'
@@ -190,12 +190,38 @@ useHead({
 })
 
 const step = ref(1)
-const loading = ref(true)
 const submitting = ref(false)
-const prices = ref<any[]>([])
 const formData = ref({ area: 60, type: 'new', tier: 'standard', design: true })
 const contactData = ref({ name: '', phone: '' })
 const result = ref<number | null>(null)
+
+if (route.query.tier) {
+  formData.value.tier = String(route.query.tier).toLowerCase()
+}
+
+// Server-rendered pricing with a built-in fallback when no CMS is configured.
+const { data: prices, pending: loading } = await useAsyncData('calc-settings', async () => {
+  const data: any = await fetchSettings()
+
+  const getLocalized = (field: any, fallback: string = '') => {
+    if (!field) return fallback
+    if (typeof field === 'object') return field[language.value] || field.ru || field.uz || field.en || fallback
+    return field
+  }
+
+  if (Array.isArray(data) && data.length > 0 && data[0].prices) {
+    return data[0].prices.map((p: any) => ({
+      ...p,
+      label: getLocalized(p.label) || p[`label_${language.value}`] || p.label,
+    }))
+  }
+
+  return [
+    { id: 'new', label: t.value.calculatorPage.apartment, economy: 1200000, standard: 1800000, premium: 3500000 },
+    { id: 'secondary', label: t.value.calculatorPage.apartment, economy: 1500000, standard: 2200000, premium: 4000000 },
+    { id: 'house', label: t.value.calculatorPage.house, economy: 2000000, standard: 3000000, premium: 5000000 },
+  ]
+}, { default: () => [] as any[] })
 
 const calculate = () => {
   step.value = 2
@@ -220,65 +246,25 @@ const submitLead = async () => {
   submitting.value = true
   try {
     const leadData = {
-      id: "web_" + Date.now().toString(),
       name: contactData.value.name,
       phone: contactData.value.phone,
-      source: "calculator",
-      status: "new",
-      date: new Date().toISOString().split('T')[0],
-      time: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }),
+      source: 'Калькулятор',
       calculatorData: {
         area: formData.value.area,
         type: formData.value.type,
         level: formData.value.tier,
-        estimatedCost: result.value
+        estimatedCost: result.value,
       },
-      notes: `Заявка с калькулятора. Дизайн-проект: ${formData.value.design ? 'Да' : 'Нет'}`
+      notes: `Дизайн-проект: ${formData.value.design ? 'Да' : 'Нет'}`,
     }
 
     await createLead(leadData)
     step.value = 5
   } catch (e) {
     console.error('Failed to submit lead:', e)
-    alert('Произошла ошибка при отправке заявки. Пожалуйста, попробуйте позже.')
+    alert(t.value.calculatorPage.errorSend)
   } finally {
     submitting.value = false
   }
 }
-
-
-onMounted(async () => {
-  if (route.query.tier) {
-    formData.value.tier = String(route.query.tier).toLowerCase()
-  }
-  
-  try {
-    const data: any = await fetchSettings()
-
-    const getLocalized = (field: any, fallback: string = '') => {
-      if (!field) return fallback
-      if (typeof field === 'object') return field[language.value] || field.ru || field.uz || field.en || fallback
-      return field
-    }
-
-    if (Array.isArray(data) && data.length > 0 && data[0].prices) {
-      prices.value = data[0].prices.map((p: any) => ({
-        ...p,
-        label: getLocalized(p.label) || p[`label_${language.value}`] || p.label
-      }))
-    } else {
-      // Fallback
-      prices.value = [
-        { id: 'new', label: t.value.calculatorPage.apartment, economy: 1200000, standard: 1800000, premium: 3500000 },
-        { id: 'secondary', label: t.value.calculatorPage.apartment, economy: 1500000, standard: 2200000, premium: 4000000 },
-        { id: 'house', label: t.value.calculatorPage.house, economy: 2000000, standard: 3000000, premium: 5000000 }
-      ]
-    }
-
-  } catch (e) {
-    console.error('Failed to fetch prices:', e)
-  } finally {
-    loading.value = false
-  }
-})
 </script>

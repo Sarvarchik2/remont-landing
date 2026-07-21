@@ -1,9 +1,12 @@
 <template>
   <div class="relative w-full h-[500px] rounded-[32px] overflow-hidden cursor-ew-resize select-none shadow-2xl"
+    role="slider" tabindex="0"
+    :aria-valuenow="Math.round(sliderPosition)" aria-valuemin="0" aria-valuemax="100"
+    :aria-label="t.beforeAfter.title"
     @mousedown="setIsDragging(true)" @mouseup="setIsDragging(false)" @mouseleave="setIsDragging(false)"
-    @mousemove="handleMouseMove" @touchmove="handleTouchMove">
+    @mousemove="handleMouseMove" @touchmove="handleTouchMove" @keydown="handleKey">
     <div class="absolute inset-0">
-      <img src="/img/after.png"
+      <img src="/img/after.jpg" loading="lazy" width="1800" height="1005"
         alt="After" class="w-full h-full object-cover" />
       <span
         class="absolute top-6 right-6 bg-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest text-black shadow-sm">{{
@@ -12,7 +15,7 @@
 
     <div class="absolute inset-0 overflow-hidden border-r-2 border-white" :style="{ width: sliderPosition + '%' }">
       <img
-        src="/img/before.png"
+        src="/img/before.jpg" loading="lazy" width="1800" height="1005"
         alt="Before" class="w-full h-full object-cover max-w-none" style="width: 100vw;" />
       <span
         class="absolute top-6 left-6 bg-black px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest text-white shadow-sm">{{
@@ -60,5 +63,16 @@ const handleMouseMove = (e: MouseEvent) => {
 const handleTouchMove = (e: TouchEvent) => {
   const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
   handleMove(e.touches[0].clientX, rect)
+}
+
+const handleKey = (e: KeyboardEvent) => {
+  if (e.key === 'ArrowLeft') {
+    sliderPosition.value = Math.max(0, sliderPosition.value - 5)
+  } else if (e.key === 'ArrowRight') {
+    sliderPosition.value = Math.min(100, sliderPosition.value + 5)
+  } else {
+    return
+  }
+  e.preventDefault()
 }
 </script>
